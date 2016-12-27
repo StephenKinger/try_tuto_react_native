@@ -5,12 +5,12 @@ import Router from './scenes/router'
 
 class App extends Component {
 	render() {
-	    return (
-	      <Provider store={createStore()}>
-	        <Router />
-	      </Provider>
-	    );
-  	}
+     	    return (
+     	      <Provider store={createStore()}>
+     	        <Router />
+     	      </Provider>
+     	    );
+       	}
 }
 
 export default App;
