@@ -1,18 +1,22 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet} from 'react-native'
 import LoginDashboard from './loginDashboard'
-
+import DashboardDragDropList from './dashboardDragDropList'
 
 const Dashboard = (props) => {
   const { value, list , onChangeText, submitAction, itemOnEdit, textInput, buttonText, loginAsync,
-  isNotLoggedIn, loginToken } = props;
+  isNotLoggedIn, loginToken, dashboardChangeItemsOrder } = props;
 
   const inputSubmitAction = () => {
     submitAction();
   }
 
-  const editLabelAction = (index) => {
-    itemOnEdit(index);
+  const editLabelAction = (key) => {
+    itemOnEdit(key);
+  }
+
+  const changeItemOrder= (newOrder) => {
+    dashboardChangeItemsOrder(newOrder);
   }
 
   const listJSX = list.map((item, i) => {
@@ -47,7 +51,7 @@ const Dashboard = (props) => {
          <TouchableOpacity onPress={inputSubmitAction} style={styles.button}>
            <Text style={styles.buttonText}> {buttonText} </Text>
          </TouchableOpacity>
-         {listJSX}
+         <DashboardDragDropList list={list} editLabelAction={editLabelAction} changeItemOrder={changeItemOrder}/>
      </View>
      }
     </View>
@@ -75,10 +79,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputText: {
-    height: 50,
-    width: 100,
+    //height: 50,
+    //width: 100,
     borderColor: 'gray',
     borderWidth: 1,
+   // margin: 10,
+    fontSize: 15,
+    textAlign: 'center',
     margin: 10,
   },
   button: {

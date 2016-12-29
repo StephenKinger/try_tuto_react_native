@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { visitsIncrement, dashboardAddItem, dashboardEditItem } from '../modules/dashboardReducer'
+import { visitsIncrement, dashboardAddItem, dashboardEditItem, dashboardChangeItemsOrder } from '../modules/dashboardReducer'
 import {loginAsync} from '../../../modules/session'
 import Dashboard from '../../../components/Dashboard/dashboard'
 
@@ -13,7 +13,7 @@ class DashboardContainer extends Component {
 
         this.state = {
             inputValue: '',
-            editedItemIndex: null
+            editedItemKey: null
         }
     }
 
@@ -29,35 +29,39 @@ class DashboardContainer extends Component {
 
     submitAction() {
         const { dashboardAddItem, dashboardEditItem } = this.props;
-        const { inputValue, editedItemIndex } = this.state;
+        const { inputValue, editedItemKey } = this.state;
 
-        if (editedItemIndex === null) {
+        if (editedItemKey === null) {
             dashboardAddItem(inputValue);
         } else {
-            dashboardEditItem(inputValue, editedItemIndex);
+            dashboardEditItem(inputValue, editedItemKey);
         }
 
         this.setState({
             inputValue: '',
-            editedItemIndex: null
+            editedItemKey: null
         })
     }
 
-    itemOnEdit(index) {
-        console.log(index);
-        console.log(this.props.list);
-        const {list} = this.props;
-        const item = list[index];
-        console.log(item);
-        this.setState({
-            inputValue: item.label,
-            editedItemIndex: index
-        })
+
+  itemOnEdit(key) {
+    const { list } = this.props;
+    let item;
+    for(let i=0; i<list.length; i++){
+      if(list[i].key == key){
+        item = list[i];
+        break;
+      }
+    }
+      this.setState({
+      inputValue: item.label,
+      editedItemKey: key
+      });
     }
 
     render(){
-        const { inputValue, editedItemIndex } = this.state;
-        const buttonText = (editedItemIndex === null) ? 'Add Item' : 'Edit Item';
+        const { inputValue, editedItemKey } = this.state;
+        const buttonText = (editedItemKey === null) ? 'Add Item' : 'Edit Item';
         return (
             <Dashboard
                 {...this.props}
@@ -65,7 +69,8 @@ class DashboardContainer extends Component {
                 submitAction={this.submitAction}
                 itemOnEdit={this.itemOnEdit}
                 textInput={inputValue}
-                buttonText={buttonText} />
+                buttonText={buttonText}
+                />
         )
     }
 }
@@ -74,7 +79,8 @@ const mapActionCreators = {
   visitsIncrement,
   dashboardAddItem,
   dashboardEditItem,
-  loginAsync
+  loginAsync,
+  dashboardChangeItemsOrder
 }
 
 const mapStateToProps = (state) => ({
