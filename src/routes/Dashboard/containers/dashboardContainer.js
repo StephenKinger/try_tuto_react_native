@@ -48,7 +48,7 @@ class DashboardContainer extends Component {
     const { list } = this.props;
     let item;
     for(let i=0; i<list.length; i++){
-      if(list[i].key == key){
+      if(list[i].key === key){
         item = list[i];
         break;
       }

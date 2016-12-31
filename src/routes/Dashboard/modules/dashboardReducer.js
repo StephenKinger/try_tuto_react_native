@@ -60,7 +60,9 @@ export default function dashboard(state = initialState, action) {
       let newList = [];
       action.orderArray.map((orderItem) => {
         state.list.map((stateItem)=> {
-          newList.push(stateItem);
+          if (orderItem == stateItem.key) {
+            newList.push(stateItem);
+          }
         })
       });
       return {
